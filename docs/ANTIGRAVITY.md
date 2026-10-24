@@ -4,6 +4,20 @@
 > DSH 的 provider 配置在 `~/.dsh/profiles/*/cordis.patch.yml`，反代程序在 `E:\dsh\antigravity`，
 > 都不属于本仓库，需要按下面在新设备上重建。
 
+## 快速安装（推荐）
+
+仓库里的 `antigravity/` 目录把这套流程做成了脚本：
+
+```bat
+antigravity\install-antigravity.cmd
+```
+
+它会自动完成第 1、2、4 节：装 Bun + antigravity-proxy、复制工作目录并打上所有源码补丁、
+生成 `start-proxy.cmd`、给 DSH 的 `sdk`/`desktop` profile 加 provider 和凭据占位。
+装完只剩「开梯子 → 跑 start-proxy.cmd → 浏览器登录 Google」这几步。
+
+下面的 1~4 节是手动步骤和原理，脚本失败或要排错时对照着看。
+
 ## 它是什么
 
 [antigravity-proxy](https://github.com/frieser/antigravity-proxy) 把 Google Antigravity（Cloud Code）背后的

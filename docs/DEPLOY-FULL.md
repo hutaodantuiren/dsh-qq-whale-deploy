@@ -66,7 +66,7 @@ dsh plugin --profile desktop add github:Raywh/dsh-song-download
 
 ## 5. 可选：Antigravity 反代 Gemini 代替 DeepSeek
 
-完整步骤（安装 Bun/反代、改端口和 OAuth 回调、登录 Google、补许可、接进 DSH、排错）见 **[ANTIGRAVITY.md](ANTIGRAVITY.md)**。
+完整步骤见 **[ANTIGRAVITY.md](ANTIGRAVITY.md)**；懒人版直接跑仓库里的 `antigravity\install-antigravity.cmd`（自动装依赖、打补丁、改 profile）。
 
 要点：
 

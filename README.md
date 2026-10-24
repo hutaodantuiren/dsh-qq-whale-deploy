@@ -19,6 +19,7 @@
 - [快速部署文档](docs/DEPLOY.md)
 - [新设备完整部署（含点歌/视频/主人指令/Antigravity）](docs/DEPLOY-FULL.md)
 - [Antigravity 反代 Gemini 接进 DSH（完整步骤）](docs/ANTIGRAVITY.md)
+- [Antigravity 一键部署脚本](antigravity/README.md)
 - [config.json 说明](#configjson-说明)
 - [DSH 端到底装了什么](#dsh-端到底装了什么)
 - [工具列表](#工具列表)
