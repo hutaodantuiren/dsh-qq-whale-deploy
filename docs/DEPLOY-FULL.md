@@ -66,30 +66,14 @@ dsh plugin --profile desktop add github:Raywh/dsh-song-download
 
 ## 5. 可选：Antigravity 反代 Gemini 代替 DeepSeek
 
-1. 装 Bun + [antigravity-proxy](https://github.com/frieser/antigravity-proxy)，跑在 `127.0.0.1:3457`，面板 `http://127.0.0.1:3457/frontend/index.html`
-2. 用 Google 账号登录一次（需要能访问 Google 的梯子；HK/大陆出口会报 `UNSUPPORTED_LOCATION`）
-3. DSH 的 profile（`desktop` 和 `sdk`）里加 provider：
+完整步骤（安装 Bun/反代、改端口和 OAuth 回调、登录 Google、补许可、接进 DSH、排错）见 **[ANTIGRAVITY.md](ANTIGRAVITY.md)**。
 
-```yaml
-- id: llm-pi-ai
-  config:
-    providers:
-      antigravity:
-        apiKeyEnv: ANTIGRAVITY_API_KEY
-        api: openai-completions
-        baseURL: http://127.0.0.1:3457/v1
-        models:
-          - id: gemini-3-flash
-            name: Gemini 3 Flash (Antigravity)
-            contextWindow: 1048576
-            maxTokens: 65536
-            input: [text, image]
-```
+要点：
 
-4. 凭据写进 `~/.dsh/.credentials.yaml`：`refs.ANTIGRAVITY_API_KEY: antigravity-local`（反代不校验）
-5. `config.json` 里 `dsh.provider: "antigravity"`、`dsh.model: "gemini-3-flash"`，并把 `dsh.reasoningEffort` 留空（这个模型没有 reasoning 档位）
-
-细节和踩坑见 README「模型：用 Antigravity 反代 Gemini（可选）」。
+- 反代是外部的 Bun 项目 `antigravity-proxy`，跑在 `127.0.0.1:3457`，需要能访问 Google 的梯子（SG/US/JP）
+- 账号可能要先装一次 Antigravity IDE 登录，才有 `#3501` 之外的许可
+- DSH 的 `desktop` 和 `sdk` 两个 profile 都要加 `llm-pi-ai` 的 `providers.antigravity`
+- 桥接 `config.json` 里 `dsh.provider: "antigravity"`、`dsh.model: "gemini-3-flash"`，`dsh.reasoningEffort` 必须留空
 
 ## 6. 启动顺序
 

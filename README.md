@@ -18,6 +18,7 @@
 - [快速开始](#快速开始)
 - [快速部署文档](docs/DEPLOY.md)
 - [新设备完整部署（含点歌/视频/主人指令/Antigravity）](docs/DEPLOY-FULL.md)
+- [Antigravity 反代 Gemini 接进 DSH（完整步骤）](docs/ANTIGRAVITY.md)
 - [config.json 说明](#configjson-说明)
 - [DSH 端到底装了什么](#dsh-端到底装了什么)
 - [工具列表](#工具列表)
@@ -658,6 +659,8 @@ node scripts/avatar-hunt.mjs "" --choose 2
 4. 桥接配置：`dsh.provider: "antigravity"`、`dsh.model: "gemini-3-flash"`；这个模型没有 reasoning 档位，所以 `dsh.reasoningEffort` 要留空（空字符串 = 不传）。
 
 注意：反代进程挂了或梯子断了，DSH 这一侧会直接回合失败；桥接日志里会看到 `unavailable / fetch failed` 之类的错误。
+
+完整安装、改源码（端口/OAuth 回调/工具结果名字）、登录与排错见 **[docs/ANTIGRAVITY.md](docs/ANTIGRAVITY.md)**。
 
 ## 常见问题
 
