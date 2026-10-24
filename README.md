@@ -656,7 +656,7 @@ node scripts/avatar-hunt.mjs "" --choose 2
 1. 本地跑反代：[antigravity-proxy](https://github.com/frieser/antigravity-proxy)（Bun），本机装在 `E:\dsh\antigravity`，启动脚本 `E:\dsh\antigravity\start-proxy.cmd`，监听 `127.0.0.1:3457`，面板 `http://127.0.0.1:3457/frontend/index.html`。
 2. 反代要能访问 Google：它继承 `HTTPS_PROXY=http://127.0.0.1:2712`（启动脚本里写死，按自己的梯子改）。HK/大陆出口不行，会报 `UNSUPPORTED_LOCATION`；账号还需要在 Antigravity IDE 里登录一次来拿许可，否则 `#3501 SUBSCRIPTION_REQUIRED`。
 3. DSH 侧：profile 的 `cordis.patch.yml` 里加 `llm-pi-ai` 的 `providers.antigravity`（`api: openai-completions`、`baseURL: http://127.0.0.1:3457/v1`、`apiKeyEnv: ANTIGRAVITY_API_KEY`），凭据写在 `~/.dsh/.credentials.yaml` 的 `refs`（值随便填，反代不校验）。
-4. 桥接配置：`dsh.provider: "antigravity"`、`dsh.model: "gemini-3-flash"`；这个模型没有 reasoning 档位，所以 `dsh.reasoningEffort` 要留空（空字符串 = 不传）。
+4. 桥接配置：`dsh.provider: "antigravity"`、`dsh.model: "gemini-3.8-flash-medium"`；这个模型没有 reasoning 档位，所以 `dsh.reasoningEffort` 要留空（空字符串 = 不传）。
 
 注意：反代进程挂了或梯子断了，DSH 这一侧会直接回合失败；桥接日志里会看到 `unavailable / fetch failed` 之类的错误。
 

@@ -89,6 +89,40 @@ for (const m of openaiBody.messages) {
 name: msg.name || toolNameById.get(String(msg.tool_call_id)) || "function_result",
 ```
 
+## 2.4 客户端版本决定能用的模型（**想用 3.8 必看**）
+
+Google 的 `v1internal:fetchAvailableModels` 会**按客户端版本**返回模型目录：
+
+- 伪装 `antigravity/1.15.8`：只返回 Gemini 3.5 一代（`gemini-3.5-flash-lite`、`gemini-3.5-flash-low`…）
+- 伪装 `antigravity/2.5.5`（或更新）：多出 **`gemini-3.8-flash-low` / `gemini-3.8-flash-medium` / `gemini-3.8-flash-high`**
+
+所以两处都要改：
+
+1. `src/utils/headers.ts`：把版本改成当前 Antigravity 客户端的版本（写死或走环境变量）
+
+```ts
+const ANTIGRAVITY_VERSION = process.env.ANTIGRAVITY_VERSION || "2.5.5";
+```
+
+2. `src/api/quota.ts`：拉模型列表时**不要**把 UA 覆盖成 `"antigravity"`，否则版本信息丢了，目录又退回旧版
+
+```ts
+headers: {
+  ...getImpersonationHeaders(account.accessToken, account.fingerprint),
+},
+```
+
+改完重启反代，`/v1/models` 里就会出现 3.8 系列。实测（同账号、SG 节点）：
+
+| 模型 | 首字耗时 | 工具调用 |
+| --- | --- | --- |
+| `gemini-3.8-flash-high` | ~5.9s | 正常 |
+| `gemini-3.8-flash-medium` | ~4.6s | 正常 |
+| `gemini-3.8-flash-low` | ~3.0s | 正常 |
+
+> 顺带一提：旧模型 id 现在会被 Google 映射到新模型，例如 `gemini-2.5-flash` 拿到的是「Gemini 3.5 Flash Lite」、
+> `gemini-3-flash-agent` 是「Gemini 3.5 Flash (High)」。想要确定的新模型，直接用 `gemini-3.8-flash-*` 这种显式 id。
+
 ## 3. 登录 Google 账号
 
 反代需要能访问 `accounts.google.com` / `oauth2.googleapis.com` / `cloudcode-pa.googleapis.com`，
@@ -142,6 +176,21 @@ IDE 装完直接启动登录一次就行，之后可以关掉；许可跟着账�
             contextWindow: 1048576
             maxTokens: 65536
             input: [text, image]
+          - id: gemini-3.8-flash-high
+            name: Gemini 3.8 Flash High (Antigravity)
+            contextWindow: 1048576
+            maxTokens: 65536
+            input: [text, image]
+          - id: gemini-3.8-flash-medium
+            name: Gemini 3.8 Flash Medium (Antigravity)
+            contextWindow: 1048576
+            maxTokens: 65536
+            input: [text, image]
+          - id: gemini-3.8-flash-low
+            name: Gemini 3.8 Flash Low (Antigravity)
+            contextWindow: 1048576
+            maxTokens: 65536
+            input: [text, image]
 ```
 
 > `qq-bridge` 用的是 `sdk` profile（`config.dsh.profile`）；DSH 桌面 GUI 用 `desktop`。
@@ -163,7 +212,7 @@ refs:
 ```json
 "dsh": {
   "provider": "antigravity",
-  "model": "gemini-3-flash",
+  "model": "gemini-3.8-flash-medium",
   "reasoningEffort": ""
 }
 ```
@@ -188,9 +237,9 @@ start "" /min "E:\dsh\antigravity\node_modules\.pnpm\@oven+bun-windows-x64@1.4.4
 自检顺序：
 
 1. `curl http://127.0.0.1:3457/v1/models` → 应返回模型列表（空数组说明没账号/没登录成功）
-2. `curl -X POST http://127.0.0.1:3457/v1/chat/completions -H "content-type: application/json" -H "authorization: Bearer x" -d '{"model":"gemini-3-flash","messages":[{"role":"user","content":"hi"}]}'` → 应返回 JSON
+2. `curl -X POST http://127.0.0.1:3457/v1/chat/completions -H "content-type: application/json" -H "authorization: Bearer x" -d '{"model":"gemini-3.8-flash-medium","messages":[{"role":"user","content":"hi"}]}'` → 应返回 JSON
 3. 带 tools 再打一次，确认返回 `tool_calls`
-4. 起桥接，控制台显示 `DSH：已就绪 · gemini-3-flash`
+4. 起桥接，控制台显示 `DSH：已就绪 · gemini-3.8-flash-medium`
 
 ## 6. 常见问题
 

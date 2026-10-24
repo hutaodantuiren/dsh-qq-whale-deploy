@@ -73,7 +73,7 @@ dsh plugin --profile desktop add github:Raywh/dsh-song-download
 - 反代是外部的 Bun 项目 `antigravity-proxy`，跑在 `127.0.0.1:3457`，需要能访问 Google 的梯子（SG/US/JP）
 - 账号可能要先装一次 Antigravity IDE 登录，才有 `#3501` 之外的许可
 - DSH 的 `desktop` 和 `sdk` 两个 profile 都要加 `llm-pi-ai` 的 `providers.antigravity`
-- 桥接 `config.json` 里 `dsh.provider: "antigravity"`、`dsh.model: "gemini-3-flash"`，`dsh.reasoningEffort` 必须留空
+- 桥接 `config.json` 里 `dsh.provider: "antigravity"`、`dsh.model: "gemini-3.8-flash-medium"`，`dsh.reasoningEffort` 必须留空
 
 ## 6. 启动顺序
 
